@@ -13,11 +13,16 @@ SOURCES := $(filter-out libs/OwlProgram/LibSource/ColourScreenPatch.cpp,$(SOURCE
 SOURCES := $(filter-out libs/OwlProgram/LibSource/MonochromeScreenPatch.cpp,$(SOURCES))
 SOURCES := $(filter-out libs/OwlProgram/LibSource/PatchParameter.cpp,$(SOURCES))
 
-FLAGS += -DVCV -Ilibs/OwlProgram/LibSource -Ilibs/OwlProgram/Source -Ilibs/OwlProgram/Libraries/KissFFT -Ilibs/OwlProgram/Libraries -Ilibs/Iroi
+FLAGS += -DVCV -Ilibs/OwlProgram/LibSource -Ilibs/OwlProgram/Source -Ilibs/OwlProgram/Libraries/KissFFT -Ilibs/OwlProgram/Libraries
 
 DISTRIBUTABLES += $(wildcard LICENSE*) res
 
 include $(RACK_DIR)/plugin.mk
+
+# Iroi and Oneiroi ship their own (differing) Commons.h/Ui.h/Clock.h...
+# keep the include dirs scoped per translation unit.
+src/Iroi.o obj/src/Iroi.o: FLAGS += -Ilibs/Iroi
+src/Oneiroi.o obj/src/Oneiroi.o: FLAGS += -Ilibs/Oneiroi
 
 CXXFLAGS += -std=c++17
 

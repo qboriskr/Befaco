@@ -1,0 +1,56 @@
+# Changelog
+
+## 1.2.2 (2025-10-03)
+
+- fixed unwanted resonator harmonics (https://github.com/Befaco/Oneiroi/issues/38)
+- raised maximum resonator feedback
+
+## 1.2.1 (2025-09-22)
+
+- fixed looper's start and length knobs not working when speed = 0 (https://github.com/Befaco/Oneiroi/issues/50)
+- removed LED indication of patch version (relying on the "loaded patch" information here
+  https://www.rebeltech.org/patch-library/device/)
+
+## 1.2.0 (2025-05-12)
+
+- fixed 0v-1v V/Oct CV range (needs hw fix) (<https://github.com/Befaco/Oneiroi/issues/37>)
+- fixed supersaw pitch (it was half of both wt and sine) (https://github.com/Befaco/Oneiroi/issues/32)
+- removed V/Oct CV attenuation feature
+- not using calibration data for knobs and faders anymore
+
+## 1.1.1 (2024-12-14)
+
+- Changed BP filter from biguad to SVF to prevent potential instabilities (from
+  VCV version, see https://github.com/Befaco/Oneiroi/commit/4bf7fddd1839bae72684bd95c76c348c0f2ba5d1)
+
+## 1.1.0 (2024-11-29)
+
+- Fixed modulation and CV mappings when using attenuverters (#2)
+- Fixed looper's backwards playback (#3)
+- New crossfade for looper's loop point (#4)
+- Fixed sine osc frequency boundaries (#6)
+- Raised looper's crossfading time / Fixed crossfading when going backwards (#11)
+- Fixed wavetable pitch jittery
+- Smoothed wavetable offset
+- Improved wavetable sound by passing it through a fixed low shelf filter
+- Fixed sine waves unison (#12)
+- Fixed wavetable offset CV (#16)
+- Removed a bit of lag from osc pitch control and V/OCT input
+- Tweaked the oscillators' levels (#17)
+- Swapped biquad filters for SVF in DjFilter to save some CPU, especially when
+  looper is recording
+- Added fade in/out when starting/stopping recording to avoid clicks
+- Smoothed echo's density (#9)
+- Raised looper's start parameter resolution
+- DC blocking filters at the beginning and at the end of the audio chain to
+  reduce low end rumble
+- A bit of gain to DjFilter's extremes
+- Better fade when looper is triggered
+- Fixed clicking of echo's density when sync'd
+- Added compressors to echo and ambience
+- Displaying patch version with LEDs
+- Fixed ambience's reverse spacetime
+
+## 1.0.0 (2024-07-16)
+
+- First release version.

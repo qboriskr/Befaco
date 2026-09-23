@@ -40,6 +40,7 @@ extern Model* modelAxBC;
 extern Model* modelSlew;
 extern Model* modelMuDi;
 extern Model* modelIroi;
+extern Model* modelOneiroi;
 extern Model* modelRandom8;
 
 struct Knurlie : SvgScrew {

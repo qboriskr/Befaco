@@ -38,5 +38,6 @@ void init(rack::Plugin *p) {
 	p->addModel(modelSlew);
 	p->addModel(modelMuDi);
 	p->addModel(modelIroi);
+	p->addModel(modelOneiroi);
 	p->addModel(modelRandom8);
 }

@@ -439,6 +439,18 @@
       ]
     },
     {
+      "slug": "Oneiroi",
+      "name": "Oneiroi",
+      "description": "Compact synthesiser based around morphing wavetables, with a built-in looper",
+      "manualUrl": "https://www.befaco.org/oneiroi/",
+      "tags": [
+        "Hardware clone",
+        "Sound source",
+        "Synth voice",
+        "Wavetable"
+      ]
+    },
+    {
       "slug": "Random8",
       "name": "Random8",
       "description": "An eight channel random voltage generator, with dedicated per–channel looping controls",

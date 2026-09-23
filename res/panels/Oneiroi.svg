@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   version="1.1"
+   id="Oneiroi"
+   width="152.4mm"
+   height="128.5mm"
+   viewBox="0 0 1524 1285"
+   inkscape:export-filename="ONEIROI.svg.png"
+   inkscape:export-xdpi="300"
+   inkscape:export-ydpi="300"
+   xml:space="preserve"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <!--
+       Oneiroi front panel. 1 mm = 10 px (viewBox 0 0 1524 1285 = 152.4 x 128.5 mm).
+       30 HP Eurorack. All control anchors match the mm positions used by
+       OneiroiWidget in src/Oneiroi.cpp (mm * 10).
+       Left band (x < 61.1 mm): Oneiroi sources - OSC / DET / LOOP / REC / RND
+       jacks, LOOP / OSC / RAND knob columns, 4 source faders, 2x2 utility
+       buttons. Right band (x >= 61.1 mm): full Iroi control block translated
+       +61.1 mm (jacks, filter/resonator/echo/ambience knobs, mod glyphs,
+       dry/wet faders, SHIFT/RANDOM/CLEAR buttons).
+  -->
+  <defs>
+    <style id="textstyle">
+      .t  { font-family: 'Arial','Helvetica',sans-serif; text-transform: uppercase; }
+      .title { font-size: 60px; font-weight: bold; fill: #ffffff; letter-spacing: 14px; }
+      .sub  { font-size: 14px; fill: #c8c8c8; letter-spacing: 8px; }
+      .lbl  { font-size: 16.5px; font-weight: bold; fill: #ffffff; }
+      .cap  { font-size: 15px; font-weight: bold; fill: #ffffff; }
+      .btn  { font-size: 14px; font-weight: bold; fill: #ffffff; }
+    </style>
+  </defs>
+
+  <g id="panel">
+    <rect id="bg" x="0" y="0" width="1524" height="1285" rx="20" ry="20" fill="#1A1A1A" />
+    <rect id="frame" x="10" y="10" width="1504" height="1265" rx="16" ry="16"
+          fill="none" stroke="#ffffff" stroke-opacity="0.85" stroke-width="3" />
+  </g>
+
+  <!-- Zone separators: jack row / knob+glyph band / fader band / label band,
+       plus the Sources | FX divider at the +61.1mm boundary -->
+  <g id="separators" stroke="#ffffff" fill="none">
+    <line id="sep_jack_knob" x1="20" y1="245" x2="1514" y2="245" stroke-opacity="0.9" stroke-width="2.2" />
+    <line id="sep_knob_fader" x1="20" y1="860" x2="1514" y2="860" stroke-opacity="0.9" stroke-width="2.2" />
+    <line id="sep_fader_lbl"  x1="20" y1="1150" x2="1514" y2="1150" stroke-opacity="0.9" stroke-width="2.2" />
+    <line id="zone_sep" x1="611" y1="270" x2="611" y2="850" stroke-opacity="0.5" stroke-width="2" />
+  </g>
+
+  <g id="title">
+    <text id="title_text" class="t title" x="762" y="88" text-anchor="middle">ONEIROI</text>
+    <text id="subtitle" class="t sub" x="762" y="112" text-anchor="middle">BEFACO &#183; WAVETABLE SYNTH &#183; LOOPER</text>
+  </g>
+
+  <!-- Jacks at y = 15.005 mm: left 5 source jacks at 12 mm pitch, right 9
+       Iroi jacks translated +61.1 mm -->
+  <g id="jack-input" stroke="#ffffff" fill="none">
+    <g id="jack_labels">
+      <text class="t lbl" x="80"   y="210" text-anchor="middle">OSC</text>
+      <text class="t lbl" x="200"  y="210" text-anchor="middle">DET</text>
+      <text class="t lbl" x="320"  y="210" text-anchor="middle">LOOP</text>
+      <text class="t lbl" x="440"  y="210" text-anchor="middle">REC</text>
+      <text class="t lbl" x="560"  y="210" text-anchor="middle">RND</text>
+      <text class="t lbl" x="661"  y="210" text-anchor="middle">L-IN</text>
+      <text class="t lbl" x="763"  y="210" text-anchor="middle">R-IN</text>
+      <text class="t lbl" x="864"  y="210" text-anchor="middle">FILT</text>
+      <text class="t lbl" x="966"  y="210" text-anchor="middle">RES</text>
+      <text class="t lbl" x="1068" y="210" text-anchor="middle">ECH</text>
+      <text class="t lbl" x="1169" y="210" text-anchor="middle">AMBI</text>
+      <text class="t lbl" x="1271" y="210" text-anchor="middle">SYNC</text>
+      <text class="t lbl" x="1372" y="210" text-anchor="middle">L-OUT</text>
+      <text class="t lbl" x="1474" y="210" text-anchor="middle">R-OUT</text>
+    </g>
+    <g id="jackpads" stroke-width="3.5">
+      <circle cx="80"   cy="150" r="32" />
+      <circle cx="200"  cy="150" r="32" />
+      <circle cx="320"  cy="150" r="32" />
+      <circle cx="440"  cy="150" r="32" />
+      <circle cx="560"  cy="150" r="32" />
+      <circle cx="661"  cy="150" r="32" />
+      <circle cx="763"  cy="150" r="32" />
+      <circle cx="864"  cy="150" r="32" />
+      <circle cx="966"  cy="150" r="32" />
+      <circle cx="1068" cy="150" r="32" />
+      <circle cx="1169" cy="150" r="32" />
+      <circle cx="1271" cy="150" r="32" />
+    </g>
+    <g id="jackholes" fill="#ffffff" stroke="none">
+      <circle cx="80"   cy="150" r="8" />
+      <circle cx="200"  cy="150" r="8" />
+      <circle cx="320"  cy="150" r="8" />
+      <circle cx="440"  cy="150" r="8" />
+      <circle cx="560"  cy="150" r="8" />
+      <circle cx="661"  cy="150" r="8" />
+      <circle cx="763"  cy="150" r="8" />
+      <circle cx="864"  cy="150" r="8" />
+      <circle cx="966"  cy="150" r="8" />
+      <circle cx="1068" cy="150" r="8" />
+      <circle cx="1169" cy="150" r="8" />
+      <circle cx="1271" cy="150" r="8" />
+    </g>
+  </g>
+
+  <g id="jack-output" stroke="#ffffff" fill="none">
+    <g id="jackpads_out" stroke-width="3.5">
+      <circle cx="1372" cy="150" r="32" />
+      <circle cx="1474" cy="150" r="32" />
+    </g>
+    <g id="jackholes_out" fill="#ffffff" stroke="none">
+      <circle cx="1372" cy="150" r="8" />
+      <circle cx="1474" cy="150" r="8" />
+    </g>
+  </g>
+
+  <!-- Auxiliary indicator LEDs -->
+  <g id="led" fill="none" stroke="#ffffff">
+    <circle id="led_input" cx="135"  cy="385" r="16" stroke-width="3" />
+    <circle id="led_mod"   cx="734.7" cy="599.8" r="13" stroke-width="3" />
+    <circle id="led_sync"  cx="1275" cy="320" r="13" stroke-width="3" />
+    <path id="arrow_left"  d="M 235 600 l 20 -16 v 32 z" fill="#ffffff" stroke="none" />
+    <path id="arrow_right" d="M 345 600 l -20 -16 v 32 z" fill="#ffffff" stroke="none" />
+  </g>
+
+  <!-- Column captions and left-band param names -->
+  <g id="captions" class="t cap">
+    <text x="124"  y="270" text-anchor="middle">RND</text>
+    <text x="290"  y="270" text-anchor="middle">LOOP</text>
+    <text x="456"  y="270" text-anchor="middle">OSC</text>
+    <text x="735"  y="270" text-anchor="middle">MOD</text>
+    <text x="901"  y="270" text-anchor="middle">FILTER</text>
+    <text x="1067" y="270" text-anchor="middle">ECHO</text>
+    <text x="1238" y="270" text-anchor="middle">RESONATOR</text>
+    <text x="1409" y="270" text-anchor="middle">AMBI</text>
+  </g>
+
+  <!-- Left band knob names (right band mirrors Iroi: icons, no per-knob text) -->
+  <g id="param_names" class="t lbl">
+    <text x="290" y="308" text-anchor="middle">SPEED</text>
+    <text x="456" y="308" text-anchor="middle">DETUNE</text>
+
+    <text x="124" y="595" text-anchor="middle">MODE</text>
+    <text x="290" y="595" text-anchor="middle">START</text>
+    <text x="456" y="595" text-anchor="middle">PITCH</text>
+
+    <text x="124" y="790" text-anchor="middle">AMT</text>
+    <text x="290" y="790" text-anchor="middle">LENGTH</text>
+  </g>
+
+  <!-- Large knob pads (Davies row A + row C) -->
+  <g id="knob-large" stroke="#ffffff" fill="none">
+    <g>
+      <circle cx="290.09" cy="383.69" r="70" stroke-width="4" />
+      <circle cx="290.09" cy="383.69" r="11" fill="#ffffff" stroke="none" />
+    </g>
+    <g>
+      <circle cx="456.48" cy="383.69" r="70" stroke-width="4" />
+      <circle cx="456.48" cy="383.69" r="11" fill="#ffffff" stroke="none" />
+    </g>
+    <g>
+      <circle cx="901.09" cy="383.69" r="70" stroke-width="4" />
+      <circle cx="901.09" cy="383.69" r="11" fill="#ffffff" stroke="none" />
+    </g>
+    <g>
+      <circle cx="1238.26" cy="383.59" r="70" stroke-width="4" />
+      <circle cx="1238.26" cy="383.59" r="11" fill="#ffffff" stroke="none" />
+    </g>
+    <g>
+      <circle cx="1067.5" cy="707.93" r="70" stroke-width="4" />
+      <circle cx="1067.5" cy="707.93" r="11" fill="#ffffff" stroke="none" />
+    </g>
+    <g>
+      <circle cx="1409.04" cy="707.65" r="70" stroke-width="4" />
+      <circle cx="1409.04" cy="707.65" r="11" fill="#ffffff" stroke="none" />
+    </g>
+  </g>
+
+  <!-- Small knob pads (rows B / C / D) -->
+  <g id="knob-small" stroke="#ffffff" fill="none">
+    <g id="knob_small_ring">
+      <circle cx="123.77" cy="491.7" r="38" stroke-width="3.2" />
+      <circle cx="290.09" cy="491.53" r="38" stroke-width="3.2" />
+      <circle cx="456.48" cy="491.53" r="38" stroke-width="3.2" />
+      <circle cx="734.77" cy="491.7" r="38" stroke-width="3.2" />
+      <circle cx="1067.48" cy="491.53" r="38" stroke-width="3.2" />
+      <circle cx="1409.01" cy="491.53" r="38" stroke-width="3.2" />
+      <circle cx="123.77" cy="708.04" r="38" stroke-width="3.2" />
+      <circle cx="290.09" cy="707.93" r="38" stroke-width="3.2" />
+      <circle cx="734.77" cy="708.04" r="38" stroke-width="3.2" />
+      <circle cx="901.08" cy="785.12" r="38" stroke-width="3.2" />
+      <circle cx="1238.25" cy="784.14" r="38" stroke-width="3.2" />
+    </g>
+    <g id="knob_small_dots" fill="#ffffff" stroke="none">
+      <circle cx="123.77" cy="491.7" r="7" />
+      <circle cx="290.09" cy="491.53" r="7" />
+      <circle cx="456.48" cy="491.53" r="7" />
+      <circle cx="734.77" cy="491.7" r="7" />
+      <circle cx="1067.48" cy="491.53" r="7" />
+      <circle cx="1409.01" cy="491.53" r="7" />
+      <circle cx="123.77" cy="708.04" r="7" />
+      <circle cx="290.09" cy="707.93" r="7" />
+      <circle cx="734.77" cy="708.04" r="7" />
+      <circle cx="901.08" cy="785.12" r="7" />
+      <circle cx="1238.25" cy="784.14" r="7" />
+    </g>
+  </g>
+
+  <!-- Faders: BefacoSlidePotSmall, box 2.273 x 26.011 mm at top-left y =
+       87.842 (center y 100.8475). Slots are centered on the component centers
+       and span the full 26 mm travel. Left 4 = sources, right 4 = Iroi +61.1mm. -->
+  <g id="fader-track" stroke="#ffffff" fill="none">
+    <rect x="79.865"  y="878.475" width="23" height="260" rx="11" stroke-width="3" />
+    <rect x="219.865" y="878.475" width="23" height="260" rx="11" stroke-width="3" />
+    <rect x="359.865" y="878.475" width="23" height="260" rx="11" stroke-width="3" />
+    <rect x="499.865" y="878.475" width="23" height="260" rx="11" stroke-width="3" />
+    <rect x="713.395" y="878.475" width="23" height="260" rx="11" stroke-width="3" />
+    <rect x="1168.475" y="878.475" width="23" height="260" rx="11" stroke-width="3" />
+    <rect x="1302.755" y="878.475" width="23" height="260" rx="11" stroke-width="3" />
+    <rect x="1437.025" y="878.475" width="23" height="260" rx="11" stroke-width="3" />
+  </g>
+
+  <g id="fader-cap" stroke="#ffffff" fill="none" stroke-opacity="0.35" stroke-width="3">
+    <line x1="79.865"  y1="1009" x2="102.865" y2="1009" />
+    <line x1="219.865" y1="1009" x2="242.865" y2="1009" />
+    <line x1="359.865" y1="1009" x2="382.865" y2="1009" />
+    <line x1="499.865" y1="1009" x2="522.865" y2="1009" />
+    <line x1="713.395" y1="1009" x2="736.395" y2="1009" />
+    <line x1="1168.475" y1="1009" x2="1191.475" y2="1009" />
+    <line x1="1302.755" y1="1009" x2="1325.755" y2="1009" />
+    <line x1="1437.025" y1="1009" x2="1460.025" y2="1009" />
+  </g>
+
+  <g id="fader_labels" class="t lbl">
+    <text x="91.365"  y="1185" text-anchor="middle">IN</text>
+    <text x="231.365" y="1185" text-anchor="middle">LOOP</text>
+    <text x="371.365" y="1185" text-anchor="middle">OSC1</text>
+    <text x="511.365" y="1185" text-anchor="middle">OSC2</text>
+    <text x="724.895" y="1185" text-anchor="middle">FILT</text>
+    <text x="1179.975" y="1185" text-anchor="middle">RESO</text>
+    <text x="1314.255" y="1185" text-anchor="middle">ECHO</text>
+    <text x="1448.525" y="1185" text-anchor="middle">AMBI</text>
+  </g>
+
+  <!-- Buttons: right band = Iroi +61.1mm (SHIFT / RANDOM / CLEAR), left band =
+       interleaved 2x2 utility grid. Boxes are 7 mm decorative sockets centered
+       on the 9 mm widget hitboxes. -->
+  <g id="buttons" stroke="#ffffff" fill="none">
+    <rect x="126"   y="909.92"  width="70" height="70" rx="15" stroke-width="3" />
+    <rect x="406"   y="909.92"  width="70" height="70" rx="15" stroke-width="3" />
+    <rect x="866.09" y="909.92" width="70" height="70" rx="15" stroke-width="3" />
+    <rect x="126"   y="1069.64" width="70" height="70" rx="15" stroke-width="3" />
+    <rect x="406"   y="1069.64" width="70" height="70" rx="15" stroke-width="3" />
+    <rect x="866.09" y="1069.64" width="70" height="70" rx="15" stroke-width="3" />
+    <rect x="1032.5" y="1069.64" width="70" height="70" rx="15" stroke-width="3" />
+  </g>
+
+  <g id="button_labels" class="t btn">
+    <text x="161"    y="1015" text-anchor="middle">MOD.CV</text>
+    <text x="441"    y="1015" text-anchor="middle">REC</text>
+    <text x="901.09" y="1015" text-anchor="middle">SHIFT</text>
+    <text x="161"    y="1185" text-anchor="middle">PRE.POST</text>
+    <text x="441"    y="1185" text-anchor="middle">SS.WT</text>
+    <text x="901.09" y="1185" text-anchor="middle">RANDOM</text>
+    <text x="1067.5" y="1185" text-anchor="middle">CLEAR</text>
+  </g>
+
+  <!-- Small schematic reference crosses -->
+  <g id="crosses" stroke="#ffffff" stroke-width="2">
+    <path d="M 810 289 v 16 M 802 297 h 16" />
+    <path d="M 810 1150 v 16 M 802 1158 h 16" />
+  </g>
+</svg>
