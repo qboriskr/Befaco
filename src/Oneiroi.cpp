@@ -5,19 +5,35 @@
 // distinct symbols and don't clash at link time. Iroi's own lib stays global.
 #include "PatchProcessor.h"
 
-// The one non-inline integration entry point is defined in Iroi's TU
-// (OwlSDKIntegration.hpp). Oneiroi's wrapped headers declare it extern inside
-// befacomod; provide the befacomod-scoped definition that delegates to it.
-extern PatchProcessor* getInitialisingPatchProcessor();
-
+// The firmware (Midi.h, ParamController.h, Ui.h) reaches the PatchProcessor it
+// is initialising through befacomod::getInitialisingPatchProcessor(). Iroi's
+// TU supplies a global instance via OwlSDKIntegration.hpp, but that symbol may
+// not be emitted for every build target (e.g. VST3), so keep this TU fully
+// self-contained: provide our own internal PatchProcessor, exactly mirroring
+// Iroi's static vcvPatchProcessor and its (patch == NULL) default state.
 namespace befacomod {
+
+static PatchProcessor oneiroiPatchProcessor;
 
 PatchProcessor* getInitialisingPatchProcessor()
 {
-    return ::getInitialisingPatchProcessor();
+    return &oneiroiPatchProcessor;
 }
 
 } // namespace befacomod
+
+// PatchProcessor's constructor/destructor are defined in Iroi's
+// OwlSDKIntegration.hpp only under #if defined(VCV). Provide them here too;
+// inline (weak) symbols coalesce instead of duplicating if Iroi.o also emits
+// them, and keep the initialisation identical to avoid an ODR mismatch.
+inline PatchProcessor::PatchProcessor()
+    : patch(NULL), index(0), bufferCount(0), parameterCount(0), name(NULL)
+{
+    for (int i = 0; i < MAX_NUMBER_OF_PARAMETERS; ++i)
+        parameters[i] = NULL;
+}
+
+inline PatchProcessor::~PatchProcessor() {}
 
 #include "Oneiroi_1_2_2Patch.hpp"
 
