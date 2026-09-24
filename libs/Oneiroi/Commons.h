@@ -13,6 +13,20 @@
 #define PATCH_VERSION_MAJOR 1
 #define PATCH_VERSION_MINOR 1
 
+// Shared OwlProgram/LibSource headers (a third-party submodule we must not
+// edit) call Clamp() unqualified from the global namespace. Oneiroi's own
+// Clamp below lives inside namespace befacomod, so provide a global fallback.
+// static gives it internal linkage, so it can not clash at link time with the
+// identically named global inline Clamp from Iroi's untouchable lib headers.
+static float Clamp(float in, float min = 0.f, float max = 1.f)
+{
+    if (in < min)
+        return min;
+    if (in > max)
+        return max;
+    return in;
+}
+
 namespace befacomod {
 
 // Taken from pichenettes' stmlib.
