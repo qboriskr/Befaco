@@ -1,5 +1,12 @@
 #include "plugin.hpp"
 
+// Oneiroi must NOT include OwlSDKIntegration.hpp (its non-inline
+// getInitialisingPatchProcessor() would clash at link time with Iroi's);
+// the definition lives in Iroi.o, so this TU only declares it.
+#include "PatchProcessor.h"
+
+extern PatchProcessor* getInitialisingPatchProcessor();
+
 #include "Oneiroi_1_2_2Patch.hpp"
 #include "basicmaths.h"
 #include "FastLogTable.h"
@@ -225,10 +232,10 @@ struct OneiroiVCV : Module {
         configParam(FILTER_RESONANCE_PARAM, 0.f, 1.f, 0.15f, "Filter resonance");
         configParam(RESONATOR_TUNE_PARAM, 0.f, 1.f, 0.5f, "Resonator tune");
         configParam(RESONATOR_FEEDBACK_PARAM, 0.f, 1.f, 0.5f, "Resonator feedback");
-        configParam(ECHO_DENSITY_PARAM, 0.f, 1.f, 0.5f, "Echo density", " ", "s");
+        configParam(ECHO_DENSITY_PARAM, 0.f, 1.f, 0.5f, "Echo density", "s");
         configParam(ECHO_REPEATS_PARAM, 0.f, 1.f, 0.35f, "Echo repeats");
         configParam(AMBIENCE_SPACETIME_PARAM, 0.f, 1.f, 0.5f, "Ambience spacetime");
-        configParam(AMBIENCE_DECAY_PARAM, 0.f, 1.f, 0.5f, "Ambience decay", " ", "s");
+        configParam(AMBIENCE_DECAY_PARAM, 0.f, 1.f, 0.5f, "Ambience decay", "s");
         configParam(MOD_SPEED_PARAM, 0.f, 1.f, 0.3f, "Modulation speed");
         configParam(MOD_LEVEL_PARAM, 0.f, 1.f, 0.f, "Modulation level", "%", 0.f, 100.f);
         configSwitch(RANDOM_MODE_PARAM, 0.f, 3.f, 0.f, "Randomize mode",
@@ -554,14 +561,14 @@ struct OneiroiVCV : Module {
             arrowFlashTime = 0.5f;
         }
 
-        auto recordInEvent = recordInTrigger.process(inputs[RECORD_GATE_INPUT].getVoltage());
+        auto recordInEvent = recordInTrigger.processEvent(inputs[RECORD_GATE_INPUT].getVoltage());
         if (recordInEvent == dsp::SchmittTrigger::Event::TRIGGERED) {
             patch->buttonChanged(RECORD_IN, Patch::ON, 0);
         } else if (recordInEvent == dsp::SchmittTrigger::Event::UNTRIGGERED) {
             patch->buttonChanged(RECORD_IN, Patch::OFF, 0);
         }
 
-        auto randomInEvent = randomInTrigger.process(inputs[RANDOM_GATE_INPUT].getVoltage());
+        auto randomInEvent = randomInTrigger.processEvent(inputs[RANDOM_GATE_INPUT].getVoltage());
         if (randomInEvent == dsp::SchmittTrigger::Event::TRIGGERED) {
             patch->buttonChanged(RANDOM_IN, Patch::ON, 0);
             doRandomize();
@@ -569,7 +576,7 @@ struct OneiroiVCV : Module {
             patch->buttonChanged(RANDOM_IN, Patch::OFF, 0);
         }
 
-        auto syncEvent = syncInTrigger.process(inputs[SYNC_INPUT].getVoltage());
+        auto syncEvent = syncInTrigger.processEvent(inputs[SYNC_INPUT].getVoltage());
         if (syncEvent == dsp::SchmittTrigger::Event::TRIGGERED) {
             patch->buttonChanged(SYNC_IN, Patch::ON, 0);
         } else if (syncEvent == dsp::SchmittTrigger::Event::UNTRIGGERED) {
@@ -577,7 +584,7 @@ struct OneiroiVCV : Module {
         }
     }
 
-    void updateLights(const ProcessArgs &args, const Ui *ui) {
+    void updateLights(const ProcessArgs &args, Ui *ui) {
         const float blockTime = args.sampleTime * kBlockSize;
 
         if (randomLedBrightness > 0.f) {
