@@ -7,6 +7,7 @@
 #include "EnvelopeFollowerMod.h"
 #include "Schmitt.h"
 
+namespace befacomod {
 enum ModulationSource
 {
     MOD_SOURCE_LFO,
@@ -198,3 +199,4 @@ public:
         patchState_->modValue = l > 0.02f ? lfo_->generate() * l : 0;
     }
 };
+} // namespace befacomod

@@ -18,6 +18,7 @@
 #include "Modulation.h"
 #include "Limiter.h"
 
+namespace befacomod {
 class Oneiroi
 {
 private:
@@ -232,4 +233,4 @@ public:
         resample_->copyFrom(buffer);
     }
 };
-
+} // namespace befacomod

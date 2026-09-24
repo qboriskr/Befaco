@@ -9,6 +9,7 @@
  *        With adaptations taken from https://github.com/belangeo/pyo/blob/master/src/objects/oscilmodule.c
  *
  */
+namespace befacomod {
 class LorenzAttractor : public OscillatorTemplate<LorenzAttractor>
 {
 private:
@@ -168,3 +169,4 @@ public:
         }
     }
 };
+} // namespace befacomod

@@ -4,6 +4,7 @@
 #include "EnvFollower.h"
 #include <algorithm>
 
+namespace befacomod {
 enum PlaybackDirection
 {
     PLAYBACK_STALLED,
@@ -249,3 +250,4 @@ public:
         right = r0 + direction * (r1 - r0) * f;
     }
 };
+} // namespace befacomod

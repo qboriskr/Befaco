@@ -7,6 +7,7 @@
 #include "DcBlockingFilter.h"
 #include "Compressor.h"
 
+namespace befacomod {
 class Pole
 {
 public:
@@ -382,3 +383,4 @@ public:
         }
     }
 };
+} // namespace befacomod

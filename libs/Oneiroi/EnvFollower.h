@@ -3,6 +3,7 @@
 #include "SignalProcessor.h"
 
 // Version of EnvelopeFollower with configurable lambda.
+namespace befacomod {
 class EnvFollower : public SignalProcessor
 {
 private:
@@ -40,3 +41,4 @@ public:
         return Clamp(y_);
     }
 };
+} // namespace befacomod

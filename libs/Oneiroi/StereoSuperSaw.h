@@ -9,6 +9,7 @@
  *        https://web.archive.org/web/20110627045129/https://www.nada.kth.se/utbildning/grukth/exjobb/rapportlistor/2010/rapporter10/szabo_adam_10131.pdf
  *
  */
+namespace befacomod {
 class SuperSaw
 {
 private:
@@ -176,3 +177,4 @@ public:
         output.multiply(patchCtrls_->osc2Vol * kOScSuperSawGain);
     }
 };
+} // namespace befacomod

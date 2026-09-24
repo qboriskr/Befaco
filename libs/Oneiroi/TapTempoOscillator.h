@@ -2,6 +2,7 @@
 #include "SignalGenerator.h"
 #include "Oscillator.h"
 
+namespace befacomod {
 template<class T>
 class TapTempoOscillator : public AdjustableTapTempo, public SignalGenerator {
 protected:
@@ -42,3 +43,4 @@ public:
 
 //typedef TapTempoOscillator<SineOscillator> TapTempoSineOscillator;
 //typedef TapTempoOscillator<AgnesiOscillator> TapTempoAgnesiOscillator;
+} // namespace befacomod

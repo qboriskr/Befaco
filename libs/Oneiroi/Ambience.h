@@ -8,6 +8,7 @@
 #include "DcBlockingFilter.h"
 #include "Compressor.h"
 
+namespace befacomod {
 class Damp
 {
 private:
@@ -533,3 +534,4 @@ public:
         diffusers_[RIGHT_CHANNEL]->UpdateDelayTimes();
     }
 };
+} // namespace befacomod

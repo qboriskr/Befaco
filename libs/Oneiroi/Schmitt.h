@@ -4,6 +4,7 @@
  * @brief A trigger (or gate) generator.
  *
  */
+namespace befacomod {
 class Schmitt
 {
 public:
@@ -42,3 +43,4 @@ private:
     bool g_, f_, t_;
     float p_;
 };
+} // namespace befacomod

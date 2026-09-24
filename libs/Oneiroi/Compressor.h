@@ -6,6 +6,7 @@
 /**
  * https://git.iem.at/audioplugins/IEMPluginSuite/blob/master/resources/Compressor.h
  */
+namespace befacomod {
 class Compressor
 {
 private:
@@ -127,3 +128,4 @@ public:
         }
     }
 };
+} // namespace befacomod

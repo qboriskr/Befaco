@@ -4,6 +4,7 @@
 #include "TapTempo.h"
 #include "Schmitt.h"
 
+namespace befacomod {
 class Clock
 {
 private:
@@ -89,3 +90,4 @@ public:
         patchState_->clockTick = trigger_.Process(patchState_->tempo->isOn());
     }
 };
+} // namespace befacomod

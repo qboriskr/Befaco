@@ -9,6 +9,7 @@
 #include "Compressor.h"
 #include <stdint.h>
 
+namespace befacomod {
 enum EchoTap
 {
     TAP_LEFT_A,
@@ -293,3 +294,4 @@ public:
         }
     }
 };
+} // namespace befacomod

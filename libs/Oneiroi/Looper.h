@@ -12,6 +12,7 @@
 #include <stdint.h>
 #include <cmath>
 
+namespace befacomod {
 class Looper
 {
 private:
@@ -513,3 +514,4 @@ public:
         }
     }
 };
+} // namespace befacomod

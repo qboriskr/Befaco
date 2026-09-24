@@ -4,6 +4,7 @@
 #include "SineOscillator.h"
 #include "Schmitt.h"
 
+namespace befacomod {
 class StereoSineOscillator
 {
 private:
@@ -125,3 +126,4 @@ public:
         }
     }
 };
+} // namespace befacomod

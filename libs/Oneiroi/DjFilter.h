@@ -3,6 +3,7 @@
 #include "Commons.h"
 #include "StateVariableFilter.h"
 
+namespace befacomod {
 class DjFilter
 {
 private:
@@ -135,3 +136,4 @@ public:
         }
     }
 };
+} // namespace befacomod

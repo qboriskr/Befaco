@@ -2,6 +2,7 @@
 
 #include "Commons.h"
 
+namespace befacomod {
 extern PatchProcessor* getInitialisingPatchProcessor();
 
 enum ParamMidi {
@@ -119,3 +120,4 @@ public:
         }
     }
 };
+} // namespace befacomod

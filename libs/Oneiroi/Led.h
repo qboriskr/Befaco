@@ -2,6 +2,7 @@
 
 #include "Commons.h"
 
+namespace befacomod {
 static const int BLINK_LIMIT = 75; // 50ms (1500 = 1s)
 
 enum LedName
@@ -193,3 +194,4 @@ public:
         }
     }
 };
+} // namespace befacomod

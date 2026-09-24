@@ -13,6 +13,8 @@
 #define PATCH_VERSION_MAJOR 1
 #define PATCH_VERSION_MINOR 1
 
+namespace befacomod {
+
 // Taken from pichenettes' stmlib.
 #define CONSTRAIN(var, min, max) \
   if (var < (min)) { \
@@ -966,3 +968,4 @@ static float Attenuate(
 
     return baseValue;
 }
+} // namespace befacomod

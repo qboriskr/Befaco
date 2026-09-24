@@ -4,6 +4,7 @@
 #include "Interpolator.h"
 #include <stdint.h>
 
+namespace befacomod {
 class DelayLine
 {
 private:
@@ -85,3 +86,4 @@ public:
         }
     }
 };
+} // namespace befacomod

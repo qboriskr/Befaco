@@ -6,6 +6,7 @@
 #include "DcBlockingFilter.h"
 #include "EnvFollower.h"
 
+namespace befacomod {
 enum FilterMode
 {
     LP,
@@ -387,3 +388,4 @@ public:
         }
     }
 };
+} // namespace befacomod

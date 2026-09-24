@@ -8,6 +8,7 @@
 #include <stdint.h>
 #include <cmath>
 
+namespace befacomod {
 class StereoWaveTableOscillator
 {
 private:
@@ -123,3 +124,4 @@ public:
         }
     }
 };
+} // namespace befacomod

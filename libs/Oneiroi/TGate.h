@@ -7,6 +7,7 @@
  *        produces a gate whose duration is measured in seconds.
  *        Ported from https://pbat.ch/sndkit/tgate/
  */
+namespace befacomod {
 class TGate
 {
 public:
@@ -51,3 +52,4 @@ private:
     float dur_;
     float sr_;
 };
+} // namespace befacomod

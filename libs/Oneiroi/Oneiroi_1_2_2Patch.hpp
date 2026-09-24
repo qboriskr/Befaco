@@ -5,6 +5,7 @@
 #include "Ui.h"
 #include "Clock.h"
 
+namespace befacomod {
 class Oneiroi_1_2_2Patch : public Patch {
 private:
     Ui* ui_;
@@ -72,4 +73,5 @@ public:
     Ui* getUi() { return ui_; }
 };
 
+} // namespace befacomod
 #endif // __Oneiroi_1_2_2Patch_hpp__

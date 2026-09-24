@@ -2,6 +2,7 @@
 
 #include "Commons.h"
 
+namespace befacomod {
 class Limiter
 {
 private:
@@ -54,3 +55,4 @@ public:
         }
     }
 };
+} // namespace befacomod

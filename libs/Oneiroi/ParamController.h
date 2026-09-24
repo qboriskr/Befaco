@@ -6,6 +6,7 @@
 #include "Led.h"
 #include "TGate.h"
 
+namespace befacomod {
 extern PatchProcessor* getInitialisingPatchProcessor();
 
 enum ParamKnob {
@@ -1715,3 +1716,4 @@ public:
         }
     }
 };
+} // namespace befacomod

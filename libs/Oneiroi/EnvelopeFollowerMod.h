@@ -3,6 +3,7 @@
 #include "Commons.h"
 #include "Oscillator.h"
 
+namespace befacomod {
 class EnvelopeFollowerMod : public OscillatorTemplate<EnvelopeFollowerMod>
 {
 private:
@@ -52,3 +53,4 @@ public:
         return s_;
     }
 };
+} // namespace befacomod

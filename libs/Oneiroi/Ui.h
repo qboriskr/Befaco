@@ -9,6 +9,7 @@
 #include "Schmitt.h"
 #include "MidiMessage.h"
 
+namespace befacomod {
 enum RandomMode { RANDOM_ALL, RANDOM_OSC, RANDOM_LOOPER, RANDOM_EFFECTS };
 
 enum RecordingState {
@@ -1449,3 +1450,4 @@ public:
     bool IsRecordOn() { return recordButton_->IsOn(); }
     bool IsRandomOn() { return randomButton_->IsOn(); }
 };
+} // namespace befacomod

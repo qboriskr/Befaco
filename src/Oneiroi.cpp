@@ -1,13 +1,28 @@
 #include "plugin.hpp"
 
-// Oneiroi must NOT include OwlSDKIntegration.hpp (its non-inline
-// getInitialisingPatchProcessor() would clash at link time with Iroi's);
-// the definition lives in Iroi.o, so this TU only declares it.
+// Oneiroi's whole DSP library lives in namespace befacomod so that the many
+// same-named types it shares with Iroi (Commons.h, Ui.h, Led.h, ...) keep
+// distinct symbols and don't clash at link time. Iroi's own lib stays global.
 #include "PatchProcessor.h"
 
+// The one non-inline integration entry point is defined in Iroi's TU
+// (OwlSDKIntegration.hpp). Oneiroi's wrapped headers declare it extern inside
+// befacomod; provide the befacomod-scoped definition that delegates to it.
 extern PatchProcessor* getInitialisingPatchProcessor();
 
+namespace befacomod {
+
+PatchProcessor* getInitialisingPatchProcessor()
+{
+    return ::getInitialisingPatchProcessor();
+}
+
+} // namespace befacomod
+
 #include "Oneiroi_1_2_2Patch.hpp"
+
+using namespace befacomod;
+
 #include "basicmaths.h"
 #include "FastLogTable.h"
 #include "FastPowTable.h"

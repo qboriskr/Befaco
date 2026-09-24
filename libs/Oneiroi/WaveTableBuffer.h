@@ -3,6 +3,7 @@
 #include "Commons.h"
 #include "Interpolator.h"
 
+namespace befacomod {
 class WaveTableBuffer
 {
 private:
@@ -73,3 +74,4 @@ public:
         right = Interpolator::linear(ReadRight(i1), ReadRight(i1 + 1), f1) * x0 + Interpolator::linear(ReadRight(i2), ReadRight(i2 + 1), f2) * x;
     }
 };
+} // namespace befacomod

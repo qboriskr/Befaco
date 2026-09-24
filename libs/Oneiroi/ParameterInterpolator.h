@@ -2,6 +2,7 @@
 
 #include <stdlib.h>
 
+namespace befacomod {
 class ParameterInterpolator
 {
 private:
@@ -47,3 +48,4 @@ public:
         return value_ + increment_ * t;
     }
 };
+} // namespace befacomod

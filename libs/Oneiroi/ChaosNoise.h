@@ -3,6 +3,7 @@
 #include <stdint.h>
 #include <cmath>
 
+namespace befacomod {
 constexpr int32_t kHlskChaosNoisePhsMax = 0x1000000L;
 constexpr int32_t kHlskChaosNoisePhsMsk = 0x0FFFFFFL;
 
@@ -84,3 +85,4 @@ private:
     float maxlens_, chaos_, freq_;
     int32_t phs_;
 };
+} // namespace befacomod
