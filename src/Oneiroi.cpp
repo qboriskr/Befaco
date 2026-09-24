@@ -910,9 +910,12 @@ struct OneiroiWidget : ModuleWidget {
                                                                 OneiroiVCV::CLEAR_BUTTON_LED));
 
         // Alt layer knobs (hidden by default), red color scheme.
-        auto addAltKnob = [&](ParamId paramId, float x, float y, bool large) {
-            ParamWidget *w = large ? createParamCentered<Davies1900hRedKnob>(mm2px(Vec(x, y)), module, paramId)
-                                   : createParamCentered<BefacoTinyKnobRed>(mm2px(Vec(x, y)), module, paramId);
+        auto addAltKnob = [&](OneiroiVCV::ParamId paramId, float x, float y, bool large) {
+            ParamWidget *w = nullptr;
+            if (large)
+                w = createParamCentered<Davies1900hRedKnob>(mm2px(Vec(x, y)), module, paramId);
+            else
+                w = createParamCentered<BefacoTinyKnobRed>(mm2px(Vec(x, y)), module, paramId);
             w->hide();
             addParam(w);
             return w;
@@ -929,9 +932,12 @@ struct OneiroiWidget : ModuleWidget {
         altWidgets[9] = addAltKnob(OneiroiVCV::MOD_TYPE_PARAM, 73.477, 70.804, false);
 
         // Mod layer knobs (hidden by default), green color scheme.
-        auto addModKnob = [&](ParamId paramId, float x, float y, bool large) {
-            ParamWidget *w = large ? createParamCentered<Davies1900hGreenKnob>(mm2px(Vec(x, y)), module, paramId)
-                                   : createParamCentered<BefacoTinyKnobGreen>(mm2px(Vec(x, y)), module, paramId);
+        auto addModKnob = [&](OneiroiVCV::ParamId paramId, float x, float y, bool large) {
+            ParamWidget *w = nullptr;
+            if (large)
+                w = createParamCentered<Davies1900hGreenKnob>(mm2px(Vec(x, y)), module, paramId);
+            else
+                w = createParamCentered<BefacoTinyKnobGreen>(mm2px(Vec(x, y)), module, paramId);
             w->hide();
             addParam(w);
             return w;
@@ -951,9 +957,12 @@ struct OneiroiWidget : ModuleWidget {
         modWidgets[12] = addModKnob(OneiroiVCV::AMBIENCE_DECAY_MOD_PARAM, 123.825, 78.414, false);
 
         // CV layer knobs (hidden by default), blue color scheme.
-        auto addCvKnob = [&](ParamId paramId, float x, float y, bool large) {
-            ParamWidget *w = large ? createParamCentered<Davies1900hBlueKnob>(mm2px(Vec(x, y)), module, paramId)
-                                   : createParamCentered<BefacoTinyKnobBlue>(mm2px(Vec(x, y)), module, paramId);
+        auto addCvKnob = [&](OneiroiVCV::ParamId paramId, float x, float y, bool large) {
+            ParamWidget *w = nullptr;
+            if (large)
+                w = createParamCentered<Davies1900hBlueKnob>(mm2px(Vec(x, y)), module, paramId);
+            else
+                w = createParamCentered<BefacoTinyKnobBlue>(mm2px(Vec(x, y)), module, paramId);
             w->hide();
             addParam(w);
             return w;
