@@ -136,16 +136,26 @@ struct OneiroiVCV : Module {
     enum InputId {
         LEFT_INPUT,
         RIGHT_INPUT,
-        OSC_CV_INPUT,
-        DETUNE_CV_INPUT,
-        LOOP_CV_INPUT,
+        LOOPER_INPUT,
+        SINE_INPUT,
+        SSWT_INPUT,
+        INPUT_INPUT,
+        FILTER_INPUT,
+        RESONATOR_INPUT,
+        ECHO_INPUT,
+        AMBIENCE_INPUT,
+        SYNC_INPUT,
+        RECORD_GATE_INPUT,
+        RANDOM_GATE_INPUT,
+        LOOPER_CV_INPUT,
+        OSC_VOCT_INPUT,
+        SINE_CV_INPUT,
+        SSWT_CV_INPUT,
+        INPUT_CV_INPUT,
         FILTER_CV_INPUT,
         RESONATOR_CV_INPUT,
         ECHO_CV_INPUT,
         AMBIENCE_CV_INPUT,
-        RECORD_GATE_INPUT,
-        RANDOM_GATE_INPUT,
-        SYNC_INPUT,
         INPUTS_LEN
     };
 
@@ -344,26 +354,31 @@ struct OneiroiVCV : Module {
 
         configInput(LEFT_INPUT, "Left audio in");
         configInput(RIGHT_INPUT, "Right audio in");
-        auto oscCvInput = configInput(OSC_CV_INPUT, "Osc pitch CV");
-        oscCvInput->description = "Pitch CV (V/oct, bipolar).";
-        auto detuneCvInput = configInput(DETUNE_CV_INPUT, "Osc detune CV");
-        detuneCvInput->description = "Expected CV range: -5V to +10V.";
-        auto loopCvInput = configInput(LOOP_CV_INPUT, "Looper speed CV");
-        loopCvInput->description = "Expected CV range: -5V to +10V.";
-        auto filterCvInput = configInput(FILTER_CV_INPUT, "Filter cutoff CV");
-        filterCvInput->description = "Expected CV range: -5V to +10V.";
-        auto resonatorCvInput = configInput(RESONATOR_CV_INPUT, "Resonator tune CV");
-        resonatorCvInput->description = "Expected CV range: -5V to +10V.";
-        auto echoCvInput = configInput(ECHO_CV_INPUT, "Echo density CV");
-        echoCvInput->description = "Expected CV range: -5V to +10V.";
-        auto ambienceCvInput = configInput(AMBIENCE_CV_INPUT, "Ambience spacetime CV");
-        ambienceCvInput->description = "Expected CV range: -5V to +10V.";
-        auto recordGateInput = configInput(RECORD_GATE_INPUT, "Record gate");
-        recordGateInput->description = "High gate starts/stops looper recording.";
-        auto randomGateInput = configInput(RANDOM_GATE_INPUT, "Randomize gate");
-        randomGateInput->description = "Rising edge triggers a randomization event.";
-        auto syncInput = configInput(SYNC_INPUT, "Sync");
+        configInput(LOOPER_INPUT, "Looper audio in");
+        configInput(SINE_INPUT, "Sine audio in");
+        configInput(SSWT_INPUT, "Supersaw / wavetable audio in");
+        configInput(INPUT_INPUT, "Input audio in");
+        configInput(FILTER_INPUT, "Filter audio in");
+        configInput(RESONATOR_INPUT, "Resonator audio in");
+        configInput(ECHO_INPUT, "Echo audio in");
+        configInput(AMBIENCE_INPUT, "Ambience audio in");
+        auto syncInput = configInput(SYNC_INPUT, "Sync in");
         syncInput->description = "Clock/sync input for time-based sections.";
+        auto recordGateInput = configInput(RECORD_GATE_INPUT, "Record");
+        recordGateInput->description = "High gate starts/stops looper recording.";
+        auto randomGateInput = configInput(RANDOM_GATE_INPUT, "Random");
+        randomGateInput->description = "Rising edge triggers a randomization event.";
+
+        configInput(LOOPER_CV_INPUT, "Looper CV");
+        auto voctInput = configInput(OSC_VOCT_INPUT, "Osc V/OCT");
+        voctInput->description = "Pitch CV (V/oct, bipolar).";
+        configInput(SINE_CV_INPUT, "Sine CV");
+        configInput(SSWT_CV_INPUT, "Supersaw / wavetable CV");
+        configInput(INPUT_CV_INPUT, "Input CV");
+        configInput(FILTER_CV_INPUT, "Filter CV");
+        configInput(RESONATOR_CV_INPUT, "Resonator CV");
+        configInput(ECHO_CV_INPUT, "Echo CV");
+        configInput(AMBIENCE_CV_INPUT, "Ambience CV");
 
         configOutput(LEFT_OUTPUT, "Left audio out");
         configOutput(RIGHT_OUTPUT, "Right audio out");
@@ -405,19 +420,30 @@ struct OneiroiVCV : Module {
     }
 
     void updateCv(PatchCvs *patchCvs) {
-        patchCvs->looperSpeed = clamp(inputs[LOOP_CV_INPUT].getVoltage() / 10.f, -0.5f, 1.f);
-        patchCvs->looperStart = 0.f;
-        patchCvs->looperLength = 0.f;
-        patchCvs->oscPitch = clamp(inputs[OSC_CV_INPUT].getVoltage(), -10.f, 10.f);
-        patchCvs->oscDetune = clamp(inputs[DETUNE_CV_INPUT].getVoltage() / 10.f, -0.5f, 1.f);
-        patchCvs->filterCutoff = clamp(inputs[FILTER_CV_INPUT].getVoltage() / 10.f, -0.5f, 1.f);
-        patchCvs->filterResonance = 0.f;
-        patchCvs->resonatorTune = clamp(inputs[RESONATOR_CV_INPUT].getVoltage() / 10.f, -0.5f, 1.f);
-        patchCvs->resonatorFeedback = 0.f;
-        patchCvs->echoDensity = clamp(inputs[ECHO_CV_INPUT].getVoltage() / 10.f, -0.5f, 1.f);
-        patchCvs->echoRepeats = 0.f;
-        patchCvs->ambienceSpacetime = clamp(inputs[AMBIENCE_CV_INPUT].getVoltage() / 10.f, -0.5f, 1.f);
-        patchCvs->ambienceDecay = 0.f;
+        const float loop = inputs[LOOPER_CV_INPUT].getVoltage() / 10.f;
+        patchCvs->looperSpeed = clamp(loop, -0.5f, 1.f);
+        patchCvs->looperStart = clamp(loop, -0.5f, 1.f);
+        patchCvs->looperLength = clamp(loop, -0.5f, 1.f);
+
+        patchCvs->oscPitch = clamp(inputs[OSC_VOCT_INPUT].getVoltage(), -10.f, 10.f);
+        const float detune = inputs[SINE_CV_INPUT].getVoltage() + inputs[SSWT_CV_INPUT].getVoltage();
+        patchCvs->oscDetune = clamp(detune / 10.f, -0.5f, 1.f);
+
+        const float filter = inputs[FILTER_CV_INPUT].getVoltage() / 10.f;
+        patchCvs->filterCutoff = clamp(filter, -0.5f, 1.f);
+        patchCvs->filterResonance = clamp(filter, -0.5f, 1.f);
+
+        const float resonator = inputs[RESONATOR_CV_INPUT].getVoltage() / 10.f;
+        patchCvs->resonatorTune = clamp(resonator, -0.5f, 1.f);
+        patchCvs->resonatorFeedback = clamp(resonator, -0.5f, 1.f);
+
+        const float echo = inputs[ECHO_CV_INPUT].getVoltage() / 10.f;
+        patchCvs->echoRepeats = clamp(echo, -0.5f, 1.f);
+        patchCvs->echoDensity = clamp(echo, -0.5f, 1.f);
+
+        const float ambience = inputs[AMBIENCE_CV_INPUT].getVoltage() / 10.f;
+        patchCvs->ambienceDecay = clamp(ambience, -0.5f, 1.f);
+        patchCvs->ambienceSpacetime = clamp(ambience, -0.5f, 1.f);
     }
 
     void updatePatchParameters(PatchCtrls *patchCtrls, PatchCvs *patchCvs) {
@@ -714,12 +740,22 @@ struct OneiroiVCV : Module {
             updateLights(args, ui);
         }
 
-        bufferIn->getSamples(LEFT_CHANNEL)[bufferIndex] = inputs[LEFT_INPUT].getVoltageSum() / 5.f;
-        if (inputs[RIGHT_INPUT].isConnected()) {
-            bufferIn->getSamples(RIGHT_CHANNEL)[bufferIndex] = inputs[RIGHT_INPUT].getVoltageSum() / 5.f;
-        } else {
-            bufferIn->getSamples(RIGHT_CHANNEL)[bufferIndex] = bufferIn->getSamples(LEFT_CHANNEL)[bufferIndex];
-        }
+        float left = inputs[LEFT_INPUT].getVoltageSum();
+        float right = inputs[RIGHT_INPUT].isConnected()
+                          ? inputs[RIGHT_INPUT].getVoltageSum()
+                          : left;
+        const float sections = inputs[LOOPER_INPUT].getVoltageSum()
+                             + inputs[SINE_INPUT].getVoltageSum()
+                             + inputs[SSWT_INPUT].getVoltageSum()
+                             + inputs[INPUT_INPUT].getVoltageSum()
+                             + inputs[FILTER_INPUT].getVoltageSum()
+                             + inputs[RESONATOR_INPUT].getVoltageSum()
+                             + inputs[ECHO_INPUT].getVoltageSum()
+                             + inputs[AMBIENCE_INPUT].getVoltageSum();
+        left += sections;
+        right += sections;
+        bufferIn->getSamples(LEFT_CHANNEL)[bufferIndex] = left / 5.f;
+        bufferIn->getSamples(RIGHT_CHANNEL)[bufferIndex] = right / 5.f;
 
         if (outputs[RIGHT_OUTPUT].isConnected()) {
             outputs[LEFT_OUTPUT].setVoltage(5.f * bufferOut->getSamples(LEFT_CHANNEL)[bufferIndex]);
@@ -889,11 +925,11 @@ struct OneiroiWidget : ModuleWidget {
         // Main knobs. Left band: Oneiroi sources (rows A/B at 38.4/49.2,
         // row C at 70.8 + tiny black RAND column). Right band: Iroi FX block
         // translated +61.1mm (rows A 38.4 / B 49.2 / C 70.8 / D 78.5).
-        addParam(createParamCentered<Davies1900hDarkGreyKnob>(mm2px(Vec(29.009, 38.369)), module, OneiroiVCV::LOOP_SPEED_PARAM));
-        addParam(createParamCentered<Davies1900hDarkGreyKnob>(mm2px(Vec(45.648, 38.369)), module, OneiroiVCV::OSC_DETUNE_PARAM));
-        addParam(createParamCentered<BefacoTinyKnobLightGrey>(mm2px(Vec(29.009, 49.153)), module, OneiroiVCV::LOOP_START_PARAM));
-        addParam(createParamCentered<BefacoTinyKnobLightGrey>(mm2px(Vec(45.648, 49.153)), module, OneiroiVCV::OSC_PITCH_PARAM));
-        addParam(createParamCentered<BefacoTinyKnobLightGrey>(mm2px(Vec(29.009, 70.793)), module, OneiroiVCV::LOOP_LENGTH_PARAM));
+        addParam(createParamCentered<Davies1900hDarkGreyKnob>(mm2px(Vec(25.26f, 40.12f)), module, OneiroiVCV::LOOP_SPEED_PARAM));
+        addParam(createParamCentered<BefacoTinyKnobLightGrey>(mm2px(Vec(45.60f, 30.33f)), module, OneiroiVCV::LOOP_START_PARAM));
+        addParam(createParamCentered<BefacoTinyKnobLightGrey>(mm2px(Vec(45.60f, 51.06f)), module, OneiroiVCV::LOOP_LENGTH_PARAM));
+        addParam(createParamCentered<BefacoTinyKnobLightGrey>(mm2px(Vec(45.69f, 71.62f)), module, OneiroiVCV::OSC_DETUNE_PARAM));
+        addParam(createParamCentered<Davies1900hDarkGreyKnob>(mm2px(Vec(12.86f, 72.77f)), module, OneiroiVCV::OSC_PITCH_PARAM));
         addParam(createParamCentered<BefacoTinyKnobBlack>(mm2px(Vec(12.377, 49.17)), module, OneiroiVCV::RANDOM_MODE_PARAM));
         addParam(createParamCentered<BefacoTinyKnobBlack>(mm2px(Vec(12.377, 70.804)), module, OneiroiVCV::RANDOM_AMOUNT_PARAM));
 
@@ -913,31 +949,31 @@ struct OneiroiWidget : ModuleWidget {
 
         // Faders: BefacoSlidePotSmall (box 2.273 x 26.011 mm) at top-left y=87.842.
         // Left 4 = source mixer at 14mm pitch; right 4 = Iroi faders +61.1mm.
-        addParam(createParam<BefacoSlidePotSmall>(mm2px(Vec(8, 87.842)), module, OneiroiVCV::INPUT_FADER));
-        addParam(createParam<BefacoSlidePotSmall>(mm2px(Vec(22, 87.842)), module, OneiroiVCV::LOOPER_FADER));
-        addParam(createParam<BefacoSlidePotSmall>(mm2px(Vec(36, 87.842)), module, OneiroiVCV::OSC1_FADER));
-        addParam(createParam<BefacoSlidePotSmall>(mm2px(Vec(50, 87.842)), module, OneiroiVCV::OSC2_FADER));
-        addParam(createParam<BefacoSlidePotSmall>(mm2px(Vec(71.353, 87.842)), module, OneiroiVCV::FILTER_FADER));
-        addParam(createParam<BefacoSlidePotSmall>(mm2px(Vec(116.861, 87.842)), module, OneiroiVCV::RESONATOR_FADER));
-        addParam(createParam<BefacoSlidePotSmall>(mm2px(Vec(130.289, 87.842)), module, OneiroiVCV::ECHO_FADER));
-        addParam(createParam<BefacoSlidePotSmall>(mm2px(Vec(143.716, 87.842)), module, OneiroiVCV::AMBIENCE_FADER));
+        addParam(createParam<BefacoSlidePotSmall>(mm2px(Vec(24.24f, 87.842f)), module, OneiroiVCV::LOOPER_FADER));
+        addParam(createParam<BefacoSlidePotSmall>(mm2px(Vec(37.71f, 87.842f)), module, OneiroiVCV::OSC1_FADER));
+        addParam(createParam<BefacoSlidePotSmall>(mm2px(Vec(51.21f, 87.842f)), module, OneiroiVCV::OSC2_FADER));
+        addParam(createParam<BefacoSlidePotSmall>(mm2px(Vec(64.98f, 87.842f)), module, OneiroiVCV::INPUT_FADER));
+        addParam(createParam<BefacoSlidePotSmall>(mm2px(Vec(105.56f, 87.842f)), module, OneiroiVCV::FILTER_FADER));
+        addParam(createParam<BefacoSlidePotSmall>(mm2px(Vec(119.06f, 87.842f)), module, OneiroiVCV::RESONATOR_FADER));
+        addParam(createParam<BefacoSlidePotSmall>(mm2px(Vec(132.56f, 87.842f)), module, OneiroiVCV::ECHO_FADER));
+        addParam(createParam<BefacoSlidePotSmall>(mm2px(Vec(146.16f, 87.842f)), module, OneiroiVCV::AMBIENCE_FADER));
 
         // Buttons: right band = Iroi buttons +61.1mm (SHIFT/RANDOM at column 90.109,
         // CLEAR at 106.75). Left band = 2x2 utility grid at columns 16.1 / 44.1,
         // interleaved with the source faders (no hitbox overlap).
-        addParam(createLightParamCentered<BefacoRedLightToggleButton>(mm2px(Vec(90.109, 94.492)), module, OneiroiVCV::SHIFT_PARAM,
+        addParam(createLightParamCentered<BefacoRedLightToggleButton>(mm2px(Vec(60.88, 79.37)), module, OneiroiVCV::SHIFT_PARAM,
                                                                       OneiroiVCV::SHIFT_BUTTON_LED));
         addParam(createLightParamCentered<BefacoRgbToggleButton>(mm2px(Vec(16.1, 94.492)), module, OneiroiVCV::MOD_CV_PARAM,
                                                                      OneiroiVCV::MOD_CV_BUTTON_LED));
-        addParam(createLightParamCentered<BefacoRedLightButton>(mm2px(Vec(44.1, 94.492)), module, OneiroiVCV::RECORD_PARAM,
+        addParam(createLightParamCentered<BefacoRedLightButton>(mm2px(Vec(9.99, 112.04)), module, OneiroiVCV::RECORD_PARAM,
                                                                 OneiroiVCV::RECORD_BUTTON_LED));
-        addParam(createLightParamCentered<BefacoRedLightButton>(mm2px(Vec(90.109, 110.464)), module, OneiroiVCV::RANDOM_PARAM,
+        addParam(createLightParamCentered<BefacoRedLightButton>(mm2px(Vec(86.13, 112.03)), module, OneiroiVCV::RANDOM_PARAM,
                                                                 OneiroiVCV::RANDOM_BUTTON_LED));
         addParam(createLightParamCentered<BefacoRedLightToggleButton>(mm2px(Vec(16.1, 110.464)), module, OneiroiVCV::PRE_POST_PARAM,
                                                                       OneiroiVCV::PRE_POST_LED));
         addParam(createLightParamCentered<BefacoRedLightToggleButton>(mm2px(Vec(44.1, 110.464)), module, OneiroiVCV::SS_WT_PARAM,
                                                                       OneiroiVCV::SS_WT_LED));
-        addParam(createLightParamCentered<BefacoRedLightButton>(mm2px(Vec(106.75, 110.464)), module, OneiroiVCV::CLEAR_PARAM,
+        addParam(createLightParamCentered<BefacoRedLightButton>(mm2px(Vec(10.0, 121.6)), module, OneiroiVCV::CLEAR_PARAM,
                                                                 OneiroiVCV::CLEAR_BUTTON_LED));
 
         // Alt layer knobs (hidden by default), red color scheme.
@@ -951,10 +987,10 @@ struct OneiroiWidget : ModuleWidget {
             addParam(w);
             return w;
         };
-        altWidgets[0] = addAltKnob(OneiroiVCV::LOOP_FILTER_PARAM, 29.009, 38.369, true);
-        altWidgets[1] = addAltKnob(OneiroiVCV::LOOP_SOS_PARAM, 29.009, 49.153, false);
-        altWidgets[2] = addAltKnob(OneiroiVCV::OSC_OCTAVE_PARAM, 45.648, 38.369, true);
-        altWidgets[3] = addAltKnob(OneiroiVCV::OSC_UNISON_PARAM, 45.648, 49.153, false);
+        altWidgets[0] = addAltKnob(OneiroiVCV::LOOP_FILTER_PARAM, 25.26f, 40.12f, true);
+        altWidgets[1] = addAltKnob(OneiroiVCV::LOOP_SOS_PARAM, 45.60f, 30.33f, false);
+        altWidgets[2] = addAltKnob(OneiroiVCV::OSC_OCTAVE_PARAM, 12.86f, 72.77f, true);
+        altWidgets[3] = addAltKnob(OneiroiVCV::OSC_UNISON_PARAM, 45.69f, 71.62f, false);
         altWidgets[4] = addAltKnob(OneiroiVCV::FILTER_MODE_PARAM, 90.109, 38.369, true);
         altWidgets[5] = addAltKnob(OneiroiVCV::FILTER_POSITION_PARAM, 106.748, 49.153, false);
         altWidgets[6] = addAltKnob(OneiroiVCV::RESONATOR_DISSONANCE_PARAM, 123.826, 38.359, true);
@@ -973,11 +1009,11 @@ struct OneiroiWidget : ModuleWidget {
             addParam(w);
             return w;
         };
-        modWidgets[0] = addModKnob(OneiroiVCV::LOOP_SPEED_MOD_PARAM, 29.009, 38.369, true);
-        modWidgets[1] = addModKnob(OneiroiVCV::LOOP_START_MOD_PARAM, 29.009, 49.153, false);
-        modWidgets[2] = addModKnob(OneiroiVCV::LOOP_LENGTH_MOD_PARAM, 29.009, 70.793, false);
-        modWidgets[3] = addModKnob(OneiroiVCV::OSC_DETUNE_MOD_PARAM, 45.648, 38.369, true);
-        modWidgets[4] = addModKnob(OneiroiVCV::OSC_PITCH_MOD_PARAM, 45.648, 49.153, false);
+        modWidgets[0] = addModKnob(OneiroiVCV::LOOP_SPEED_MOD_PARAM, 25.26f, 40.12f, true);
+        modWidgets[1] = addModKnob(OneiroiVCV::LOOP_START_MOD_PARAM, 45.60f, 30.33f, false);
+        modWidgets[2] = addModKnob(OneiroiVCV::LOOP_LENGTH_MOD_PARAM, 45.60f, 51.06f, false);
+        modWidgets[3] = addModKnob(OneiroiVCV::OSC_DETUNE_MOD_PARAM, 45.69f, 71.62f, false);
+        modWidgets[4] = addModKnob(OneiroiVCV::OSC_PITCH_MOD_PARAM, 12.86f, 72.77f, true);
         modWidgets[5] = addModKnob(OneiroiVCV::FILTER_CUTOFF_MOD_PARAM, 90.109, 38.369, true);
         modWidgets[6] = addModKnob(OneiroiVCV::FILTER_RESONANCE_MOD_PARAM, 106.748, 49.153, false);
         modWidgets[7] = addModKnob(OneiroiVCV::RESONATOR_TUNE_MOD_PARAM, 123.826, 38.359, true);
@@ -998,11 +1034,11 @@ struct OneiroiWidget : ModuleWidget {
             addParam(w);
             return w;
         };
-        cvWidgets[0] = addCvKnob(OneiroiVCV::LOOP_SPEED_CV_PARAM, 29.009, 38.369, true);
-        cvWidgets[1] = addCvKnob(OneiroiVCV::LOOP_START_CV_PARAM, 29.009, 49.153, false);
-        cvWidgets[2] = addCvKnob(OneiroiVCV::LOOP_LENGTH_CV_PARAM, 29.009, 70.793, false);
-        cvWidgets[3] = addCvKnob(OneiroiVCV::OSC_DETUNE_CV_PARAM, 45.648, 38.369, true);
-        cvWidgets[4] = addCvKnob(OneiroiVCV::OSC_PITCH_CV_PARAM, 45.648, 49.153, false);
+        cvWidgets[0] = addCvKnob(OneiroiVCV::LOOP_SPEED_CV_PARAM, 25.26f, 40.12f, true);
+        cvWidgets[1] = addCvKnob(OneiroiVCV::LOOP_START_CV_PARAM, 45.60f, 30.33f, false);
+        cvWidgets[2] = addCvKnob(OneiroiVCV::LOOP_LENGTH_CV_PARAM, 45.60f, 51.06f, false);
+        cvWidgets[3] = addCvKnob(OneiroiVCV::OSC_DETUNE_CV_PARAM, 45.69f, 71.62f, false);
+        cvWidgets[4] = addCvKnob(OneiroiVCV::OSC_PITCH_CV_PARAM, 12.86f, 72.77f, true);
         cvWidgets[5] = addCvKnob(OneiroiVCV::FILTER_CUTOFF_CV_PARAM, 90.109, 38.369, true);
         cvWidgets[6] = addCvKnob(OneiroiVCV::FILTER_RESONANCE_CV_PARAM, 106.748, 49.153, false);
         cvWidgets[7] = addCvKnob(OneiroiVCV::RESONATOR_TUNE_CV_PARAM, 123.826, 38.359, true);
@@ -1012,23 +1048,34 @@ struct OneiroiWidget : ModuleWidget {
         cvWidgets[11] = addCvKnob(OneiroiVCV::AMBIENCE_SPACETIME_CV_PARAM, 140.904, 70.765, true);
         cvWidgets[12] = addCvKnob(OneiroiVCV::AMBIENCE_DECAY_CV_PARAM, 123.825, 78.414, false);
 
-        // Jacks at y=15.005mm (Iroi jack row). Left 5 are Oneiroi sources at 12mm
-        // pitch; right 9 are the Iroi jack block translated +61.1mm.
-        constexpr float kJackY = 15.005f;
-        addInput(createInputCentered<BefacoInputPort>(mm2px(Vec(8, kJackY)), module, OneiroiVCV::OSC_CV_INPUT));
-        addInput(createInputCentered<BefacoInputPort>(mm2px(Vec(20, kJackY)), module, OneiroiVCV::DETUNE_CV_INPUT));
-        addInput(createInputCentered<BefacoInputPort>(mm2px(Vec(32, kJackY)), module, OneiroiVCV::LOOP_CV_INPUT));
-        addInput(createInputCentered<BefacoInputPort>(mm2px(Vec(44, kJackY)), module, OneiroiVCV::RECORD_GATE_INPUT));
-        addInput(createInputCentered<BefacoInputPort>(mm2px(Vec(56, kJackY)), module, OneiroiVCV::RANDOM_GATE_INPUT));
-        addInput(createInputCentered<BefacoInputPort>(mm2px(Vec(66.108, kJackY)), module, OneiroiVCV::LEFT_INPUT));
-        addInput(createInputCentered<BefacoInputPort>(mm2px(Vec(76.269, kJackY)), module, OneiroiVCV::RIGHT_INPUT));
-        addInput(createInputCentered<BefacoInputPort>(mm2px(Vec(86.431, kJackY)), module, OneiroiVCV::FILTER_CV_INPUT));
-        addInput(createInputCentered<BefacoInputPort>(mm2px(Vec(96.592, kJackY)), module, OneiroiVCV::RESONATOR_CV_INPUT));
-        addInput(createInputCentered<BefacoInputPort>(mm2px(Vec(106.753, kJackY)), module, OneiroiVCV::ECHO_CV_INPUT));
-        addInput(createInputCentered<BefacoInputPort>(mm2px(Vec(116.915, kJackY)), module, OneiroiVCV::AMBIENCE_CV_INPUT));
-        addInput(createInputCentered<BefacoInputPort>(mm2px(Vec(127.076, kJackY)), module, OneiroiVCV::SYNC_INPUT));
-        addOutput(createOutputCentered<BefacoOutputPort>(mm2px(Vec(137.237, kJackY)), module, OneiroiVCV::LEFT_OUTPUT));
-        addOutput(createOutputCentered<BefacoOutputPort>(mm2px(Vec(147.399, kJackY)), module, OneiroiVCV::RIGHT_OUTPUT));
+        // Official Oneiroi jack layout: 15 in the top row on a uniform 10.17mm
+        // pitch, plus 9 per-section jacks.
+        constexpr float kJackY = 15.15f;
+        addInput(createInputCentered<BefacoInputPort>(mm2px(Vec(4.93f, kJackY)), module, OneiroiVCV::LEFT_INPUT));
+        addInput(createInputCentered<BefacoInputPort>(mm2px(Vec(15.10f, kJackY)), module, OneiroiVCV::RIGHT_INPUT));
+        addInput(createInputCentered<BefacoInputPort>(mm2px(Vec(25.27f, kJackY)), module, OneiroiVCV::LOOPER_INPUT));
+        addInput(createInputCentered<BefacoInputPort>(mm2px(Vec(35.44f, kJackY)), module, OneiroiVCV::SINE_INPUT));
+        addInput(createInputCentered<BefacoInputPort>(mm2px(Vec(45.61f, kJackY)), module, OneiroiVCV::SSWT_INPUT));
+        addInput(createInputCentered<BefacoInputPort>(mm2px(Vec(55.78f, kJackY)), module, OneiroiVCV::INPUT_INPUT));
+        addInput(createInputCentered<BefacoInputPort>(mm2px(Vec(65.95f, kJackY)), module, OneiroiVCV::FILTER_INPUT));
+        addInput(createInputCentered<BefacoInputPort>(mm2px(Vec(76.12f, kJackY)), module, OneiroiVCV::RESONATOR_INPUT));
+        addInput(createInputCentered<BefacoInputPort>(mm2px(Vec(86.29f, kJackY)), module, OneiroiVCV::ECHO_INPUT));
+        addInput(createInputCentered<BefacoInputPort>(mm2px(Vec(96.46f, kJackY)), module, OneiroiVCV::AMBIENCE_INPUT));
+        addInput(createInputCentered<BefacoInputPort>(mm2px(Vec(106.63f, kJackY)), module, OneiroiVCV::SYNC_INPUT));
+        addInput(createInputCentered<BefacoInputPort>(mm2px(Vec(116.80f, kJackY)), module, OneiroiVCV::RECORD_GATE_INPUT));
+        addInput(createInputCentered<BefacoInputPort>(mm2px(Vec(126.97f, kJackY)), module, OneiroiVCV::RANDOM_GATE_INPUT));
+        addOutput(createOutputCentered<BefacoOutputPort>(mm2px(Vec(137.14f, kJackY)), module, OneiroiVCV::LEFT_OUTPUT));
+        addOutput(createOutputCentered<BefacoOutputPort>(mm2px(Vec(147.31f, kJackY)), module, OneiroiVCV::RIGHT_OUTPUT));
+
+        addInput(createInputCentered<BefacoInputPort>(mm2px(Vec(7.09f, 51.06f)), module, OneiroiVCV::LOOPER_CV_INPUT));
+        addInput(createInputCentered<BefacoInputPort>(mm2px(Vec(32.05f, 65.30f)), module, OneiroiVCV::OSC_VOCT_INPUT));
+        addInput(createInputCentered<BefacoInputPort>(mm2px(Vec(60.87f, 37.11f)), module, OneiroiVCV::SINE_CV_INPUT));
+        addInput(createInputCentered<BefacoInputPort>(mm2px(Vec(60.88f, 51.06f)), module, OneiroiVCV::SSWT_CV_INPUT));
+        addInput(createInputCentered<BefacoInputPort>(mm2px(Vec(60.88f, 65.32f)), module, OneiroiVCV::INPUT_CV_INPUT));
+        addInput(createInputCentered<BefacoInputPort>(mm2px(Vec(92.84f, 61.84f)), module, OneiroiVCV::FILTER_CV_INPUT));
+        addInput(createInputCentered<BefacoInputPort>(mm2px(Vec(109.35f, 32.44f)), module, OneiroiVCV::RESONATOR_CV_INPUT));
+        addInput(createInputCentered<BefacoInputPort>(mm2px(Vec(126.93f, 61.84f)), module, OneiroiVCV::ECHO_CV_INPUT));
+        addInput(createInputCentered<BefacoInputPort>(mm2px(Vec(143.84f, 32.47f)), module, OneiroiVCV::AMBIENCE_CV_INPUT));
 
         // Lights
         addChild(createLightCentered<MediumLight<RedGreenBlueLight>>(mm2px(Vec(13.5, 38.5)), module, OneiroiVCV::INPUT_LIGHT));
